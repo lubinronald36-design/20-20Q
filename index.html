@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .correct {
+      color: green;
+    }
+    .incorrect {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Quiz</h1>
+  <div id="quiz-container"></div>
+
+  <script>
+    const questions = [
+      {
+        question: "What does CPU stand for?",
+        options: ["Central Power Unit", "Central Processing Unit", "Computer Processing Unit", "Central Performance Unit"],
+        correctAnswer: "Central Processing Unit"
+      },
+      {
+        question: "What is the primary function of RAM?",
+        options: ["Storage", "Processing", "Input/Output", "Memory"],
+        correctAnswer: "Memory"
+      },
+      {
+        question: "What is the brain of the computer?",
+        options: ["CPU", "RAM", "Motherboard", "Power Supply"],
+        correctAnswer: "CPU"
+      },
+      {
+        question: "Which of the following is an example of an operating system?",
+        options: ["Microsoft Word", "Google Chrome", "Windows 10", "iTunes"],
+        correctAnswer: "Windows 10"
+      },
+      {
+        question: "What does GPU stand for?",
+        options: ["Graphics Processing Unit", "General Purpose Unit", "Gigabyte Processor Unit", "Gaming Processor Unit"],
+        correctAnswer: "Graphics Processing Unit"
+      },
+      {
+        question: "What is the purpose of a firewall?",
+        options: ["To protect against viruses", "To protect against hackers", "To protect against spam", "To protect against malware"],
+        correctAnswer: "To protect against hackers"
+      },
+      {
+        question: "What is the difference between a virus and malware?",
+        options: ["A virus is a type of malware", "Malware is a type of virus", "A virus is more harmful than malware", "Malware is more harmful than a virus"],
+        correctAnswer: "A virus is a type of malware"
+      },
+      {
+        question: "What is the purpose of a router?",
+        options: ["To connect devices to a network", "To protect against viruses", "To increase internet speed", "To block unwanted emails"],
+        correctAnswer: "To connect devices to a network"
+      },
+      {
+        question: "What is the difference between HTTP and HTTPS?",
+        options: ["HTTP is secure, HTTPS is not", "HTTPS is secure, HTTP is not", "HTTP is faster than HTTPS", "HTTPS is slower than HTTP"],
+        correctAnswer: "HTTPS is secure, HTTP is not"
+      },
+      {
+        question: "What is the purpose of an IP address?",
+        options: ["To identify a device on a network", "To protect against hackers", "To increase internet speed", "To block unwanted emails"],
+        correctAnswer: "To identify a device on a network"
+      },
+      {
+        question: "What is the difference between a hub and a switch?",
+        options: ["A hub is faster than a switch", "A switch is faster than a hub", "A hub is more secure than a switch", "A switch is more secure than a hub"],
+        correctAnswer: "A switch is faster than a hub"
+      },
+      {
+        question: "What is the purpose of a DNS server?",
+        options: ["To translate domain names to IP addresses", "To protect against viruses", "To increase internet speed", "To block unwanted emails"],
+        correctAnswer: "To translate domain names to IP addresses"
+      },
+      {
+        question: "What is the difference between a local area network (LAN) and a wide area network (WAN)?",
+        options: ["A LAN is larger than a WAN", "A WAN is larger than a LAN", "A LAN is faster than a WAN", "A WAN is faster than a LAN"],
+        correctAnswer: "A WAN is larger than a LAN"
+      },
+      {
+        question: "What is the purpose of a VPN?",
+        options: ["To protect against hackers", "To increase internet speed", "To block unwanted emails", "To access a private network securely"],
+        correctAnswer: "To access a private network securely"
+      },
+      {
+        question: "What is phishing?",
+        options: ["A type of malware", "A type of virus", "A type of social engineering attack", "A type of spam"],
+        correctAnswer: "A type of social engineering attack"
+      },
+      {
+        question: "What is the purpose of two-factor authentication?",
+        options: ["To increase password strength", "To protect against phishing attacks", "To add an extra layer of security", "To block unwanted emails"],
+        correctAnswer: "To add an extra layer of security"
+      },
+      {
+        question: "What is a cookie?",
+        options: ["A type of malware", "A type of virus", "A small text file stored on a user's device", "A type of spam"],
+        correctAnswer: "A small text file stored on a user's device"
+      },
+      {
+        question: "What is the purpose of a firewall rule?",
+        options: ["To block incoming traffic", "To allow incoming traffic", "To block outgoing traffic", "To allow outgoing traffic"],
+        correctAnswer: "To block incoming traffic"
+      },
+      {
+        question: "What is a network protocol?",
+        options: ["A set of rules for communication between devices", "A type of malware", "A type of virus", "A type of spam"],
+        correctAnswer: "A set of rules for communication between devices"
+      },
+      {
+        question: "What is the purpose of a network switch?",
+        options: ["To connect devices to a network", "To protect against hackers", "To increase internet speed", "To block unwanted emails"],
+        correctAnswer: "To connect devices to a network"
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz-container");
+
+    questions.forEach((question, index) => {
+      const questionDiv = document.createElement("div");
+      questionDiv.className = "question";
+
+      const questionText = document.createElement("p");
+      questionText.textContent = question.question;
+      questionDiv.appendChild(questionText);
+
+      const radioGroup = document.createElement("div");
+      question.options.forEach((option) => {
+        const radioInput = document.createElement("input");
+        radioInput.type = "radio";
+        radioInput.name = `question${index}`;
+        radioInput.value = option;
+        const label = document.createElement("label");
+        label.textContent = option;
+        radioGroup.appendChild(radioInput);
+        radioGroup.appendChild(label);
+        radioGroup.appendChild(document.createElement("br"));
+      });
+      questionDiv.appendChild(radioGroup);
+
+      const submitButton = document.createElement("button");
+      submitButton.textContent = "Submit";
+      submitButton.onclick = () => checkAnswer(index, question.correctAnswer);
+      questionDiv.appendChild(submitButton);
+
+      const resultParagraph = document.createElement("p");
+      resultParagraph.id = `result${index}`;
+      questionDiv.appendChild(resultParagraph);
+
+      quizContainer.appendChild(questionDiv);
+    });
+
+    function checkAnswer(index, correctAnswer) {
+      const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+      const resultElement = document.getElementById(`result${index}`);
+      if (!selectedAnswer) {
+        resultElement.innerHTML = "Please select an answer!";
+        resultElement.className = "incorrect";
+      } else if (selectedAnswer.value === correctAnswer) {
+        resultElement.innerHTML = "Good job! Check point.";
+        resultElement.className = "correct";
+      } else {
+        resultElement.innerHTML = "Try again!";
+        resultElement.className = "incorrect";
+      }
+    }
+  </script>
+</body>
+</html>
